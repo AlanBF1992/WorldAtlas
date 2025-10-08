@@ -1,0 +1,9 @@
+{
+  "Name": "World Atlas",
+  "Author": "AlanBF",
+  "Version": "1.0.0",
+  "Description": "See every map on your Map Tab",
+  "UniqueID": "AlanBF.WorldAtlas",
+  "EntryDll": "WorldAtlas.dll",
+  "UpdateKeys": [ "Nexus:38316" ]
+}
