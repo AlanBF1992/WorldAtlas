@@ -1,7 +1,7 @@
 {
   "Name": "World Atlas",
   "Author": "AlanBF",
-  "Version": "1.0.0",
+  "Version": "1.0.1",
   "Description": "See every map on your Map Tab",
   "UniqueID": "AlanBF.WorldAtlas",
   "EntryDll": "WorldAtlas.dll",

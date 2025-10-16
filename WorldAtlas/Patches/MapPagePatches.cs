@@ -1,7 +1,6 @@
 ﻿using HarmonyLib;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Input;
 using StardewModdingAPI;
 using StardewValley;
 using StardewValley.Menus;
@@ -194,7 +193,7 @@ namespace WorldAtlas.Patches
                 // Better Game Menu doesn't destroy it, so we just rebuild it.
                 // It should still change the tab, but it doesn't for some reason
                 // so fuck it, I'll do it myself.
-                if (Game1.activeClickableMenu is not GameMenu && __instance.readyToClose())
+                if (ModEntry.IsGameMenu(Game1.activeClickableMenu) && Game1.activeClickableMenu is not GameMenu && __instance.readyToClose())
                 {
                     createPageButtons();
                     createRegionComponents();
