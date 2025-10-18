@@ -16,10 +16,9 @@ namespace WorldAtlas
         public int PageNum { get; set; } = 0;
     }
 
-    public class RegionInfo(GameLocation location, MapAreaPosition position, MapRegion region, string displayName)
+    public class RegionInfo(GameLocation location, MapRegion region, string displayName)
     {
         public GameLocation Location { get; set; } = location;
-        public MapAreaPosition Position { get; set; } = position;
         public MapRegion Region { get; set; } = region;
         public string DisplayName { get; set; } = displayName;
         public int PageNum { get; set; } = 0;

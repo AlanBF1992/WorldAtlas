@@ -59,13 +59,19 @@ namespace WorldAtlas.Patches
             if (!tile.Equals(Game1.player.TilePoint)) return null;
 
             MapAreaPosition? playerPosition = WorldMapManager.GetPositionData(Game1.player.currentLocation, tile)?.Data;
+            RegionInfo selectedRegion = ModEntry.SelectedRegionInfo;
 
-            if (ModEntry.SelectedRegionInfo.Region.Id == playerPosition?.Region?.Id)
+            if (selectedRegion.Region.Id == playerPosition?.Region?.Id)
             {
                 return WorldMapManager.GetPositionData(location, tile);
             }
 
-            return WorldMapManager.GetPositionData(ModEntry.SelectedRegionInfo.Location, Point.Zero);
+            if (selectedRegion.Region.Id == "GingerIsland")
+            {
+                return new MapAreaPositionWithContext(selectedRegion.Region.GetPositionData(selectedRegion.Location, tile), selectedRegion.Location, tile);
+            }
+
+            return WorldMapManager.GetPositionData(selectedRegion.Location, Point.Zero);
         }
 
         internal static void ctorPostfix()
@@ -190,15 +196,17 @@ namespace WorldAtlas.Patches
                 SelectedComponentId = 0;
                 ModEntry.SelectedRegionInfo = null;
 
-                // Better Game Menu doesn't destroy it, so we just rebuild it.
-                // It should still change the tab, but it doesn't for some reason
-                // so fuck it, I'll do it myself.
-                if (ModEntry.IsGameMenu(Game1.activeClickableMenu) && Game1.activeClickableMenu is not GameMenu && __instance.readyToClose())
-                {
-                    createPageButtons();
-                    createRegionComponents();
-                    ReconstructPage(__instance);
+                createPageButtons();
+                createRegionComponents();
+                ReconstructPage(__instance);
 
+                if (Game1.activeClickableMenu is GameMenu gameMenu)
+                {
+                    gameMenu.changeTab(gameMenu.lastOpenedNonMapTab);
+                    return false;
+                }
+                else if (ModEntry.IsGameMenu(Game1.activeClickableMenu))
+                {
                     dynamic menu = Game1.activeClickableMenu;
                     if (!menu.TryChangeTab(menu.LastTab))
                     {
@@ -212,45 +220,45 @@ namespace WorldAtlas.Patches
             return true;
         }
 
-        internal static void ReconstructPage(MapPage __instance)
+        internal static void ReconstructPage(MapPage mapPage)
         {
             WorldMapManager.ReloadData();
 
-            Point normalizedPlayerTile = __instance.GetNormalizedPlayerTile(Game1.player);
+            Point normalizedPlayerTile = mapPage.GetNormalizedPlayerTile(Game1.player);
 
             MapAreaPositionWithContext? mapPosition = GetPositionData(Game1.player.currentLocation, normalizedPlayerTile);
             MapRegion mapRegion = mapPosition?.Data.Region ?? WorldMapManager.GetMapRegions().First();
             MapArea[] mapAreas = mapRegion.GetAreas();
             string? scrollText = (ModEntry.SelectedRegionInfo?.DisplayName)?? mapPosition?.Data.GetScrollText(normalizedPlayerTile);
 
-            __instance.SetInstanceField("mapPosition", mapPosition);
-            __instance.SetInstanceField("mapRegion", mapRegion);
-            __instance.SetInstanceField("mapAreas", mapAreas);
-            __instance.SetInstanceField("scrollText", scrollText);
+            mapPage.SetInstanceField("mapPosition", mapPosition);
+            mapPage.SetInstanceField("mapRegion", mapRegion);
+            mapPage.SetInstanceField("mapAreas", mapAreas);
+            mapPage.SetInstanceField("scrollText", scrollText);
 
-            __instance.mapBounds = mapRegion.GetMapPixelBounds();
+            mapPage.mapBounds = mapRegion.GetMapPixelBounds();
 
             int num = 1000;
-            __instance.SetInstanceField("defaultComponentID", 1000);
+            mapPage.SetInstanceField("defaultComponentID", 1000);
 
             MapArea[] array = mapAreas;
-            __instance.points.Clear();
+            mapPage.points.Clear();
 
             for (int i = 0; i < array.Length; i++)
             {
                 foreach (MapAreaTooltip mapAreaTooltip in array[i].GetTooltips())
                 {
                     Rectangle pixelArea = mapAreaTooltip.GetPixelArea();
-                    pixelArea = new Rectangle(__instance.mapBounds.X + pixelArea.X, __instance.mapBounds.Y + pixelArea.Y, pixelArea.Width, pixelArea.Height);
+                    pixelArea = new Rectangle(mapPage.mapBounds.X + pixelArea.X, mapPage.mapBounds.Y + pixelArea.Y, pixelArea.Width, pixelArea.Height);
                     num++;
-                    __instance.points[mapAreaTooltip.NamespacedId] = new(pixelArea, mapAreaTooltip.NamespacedId)
+                    mapPage.points[mapAreaTooltip.NamespacedId] = new(pixelArea, mapAreaTooltip.NamespacedId)
                     {
                         myID = num,
                         label = mapAreaTooltip.Text
                     };
                     if (mapAreaTooltip.NamespacedId == "Farm/Default")
                     {
-                        __instance.SetInstanceField("defaultComponentID", num);
+                        mapPage.SetInstanceField("defaultComponentID", num);
                     }
                 }
             }
@@ -260,12 +268,12 @@ namespace WorldAtlas.Patches
             {
                 foreach (MapAreaTooltip mapAreaTooltip2 in array[i].GetTooltips())
                 {
-                    if (__instance.points.TryGetValue(mapAreaTooltip2.NamespacedId, out var value2))
+                    if (mapPage.points.TryGetValue(mapAreaTooltip2.NamespacedId, out var value2))
                     {
-                        __instance.SetNeighborId(value2, "left", mapAreaTooltip2.Data.LeftNeighbor);
-                        __instance.SetNeighborId(value2, "right", mapAreaTooltip2.Data.RightNeighbor);
-                        __instance.SetNeighborId(value2, "up", mapAreaTooltip2.Data.UpNeighbor);
-                        __instance.SetNeighborId(value2, "down", mapAreaTooltip2.Data.DownNeighbor);
+                        mapPage.SetNeighborId(value2, "left", mapAreaTooltip2.Data.LeftNeighbor);
+                        mapPage.SetNeighborId(value2, "right", mapAreaTooltip2.Data.RightNeighbor);
+                        mapPage.SetNeighborId(value2, "up", mapAreaTooltip2.Data.UpNeighbor);
+                        mapPage.SetNeighborId(value2, "down", mapAreaTooltip2.Data.DownNeighbor);
                     }
                 }
             }

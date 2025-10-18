@@ -54,7 +54,7 @@ namespace WorldAtlas
         internal static void LoadRegions(object? sender, SaveLoadedEventArgs e)
         {
             // Get regions, positions and locations from the game
-            IEnumerable<RegionInfo> allRegionsInfo = Game1.locations
+            List<RegionInfo> allRegionsInfo = [.. Game1.locations
                 .Select(location => new
                 {
                     Location = location,
@@ -65,13 +65,22 @@ namespace WorldAtlas
                 .Select(data => new RegionInfo
                 (
                     data.Location,
-                    data.Position,
                     data.Position.Region,
                     data.Position.Region.Id
-                ));
+                ))];
+
+            // Ginger Island is weird man.
+            if (!allRegionsInfo.Select(x => x.DisplayName).Contains("GingerIsland"))
+            {
+                MapRegion GingerIsland = WorldMapManager.GetMapRegions().First(x => x.Id == "GingerIsland");
+
+                allRegionsInfo.Insert(1, new RegionInfo(Game1.getLocationFromName("IslandWest"),
+                                                        GingerIsland,
+                                                        GingerIsland.Id));
+            }
 
             // Get regions id, name and visibility from data.json
-            var modData = ModEntry.ModHelper.Data.ReadJsonFile<ModData>("data.json");
+            ModData? modData = ModEntry.ModHelper.Data.ReadJsonFile<ModData>("data.json");
 
             if (modData is null)
             {
@@ -88,7 +97,7 @@ namespace WorldAtlas
             ModEntry.ModHelper.Data.WriteJsonFile("data.json", modData);
 
             // Filter the visible ones
-            ModEntry.AllVisibleRegionsInfo = [.. allRegionsInfo.Where(data => modData.Regions.Any(r => r.Id == data.Position.Region.Id && r.IsVisible))];
+            ModEntry.AllVisibleRegionsInfo = [.. allRegionsInfo.Where(data => modData.Regions.Any(r => r.Id == data.Region.Id && r.IsVisible))];
 
             // Update visible game regions name
             foreach (var dataRegion in modData.Regions)
