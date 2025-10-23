@@ -19,17 +19,30 @@ namespace WorldAtlas.Compatibility.UIInfoSuite2.Patches
             {
                 CodeMatcher matcher = new(instructions);
 
-                MethodInfo GetPositionDataInfo = AccessTools.Method(typeof(LocationOfTownsfolkPatches), nameof(GetPositionDataSafeNew));
+                MethodInfo GetPositionDataSafePlayerInfo = AccessTools.Method(typeof(LocationOfTownsfolkPatches), nameof(GetPositionDataSafePlayer));
+                MethodInfo GetPositionDataSafeNPCInfo = AccessTools.Method(typeof(LocationOfTownsfolkPatches), nameof(GetPositionDataSafeNPC));
 
                 matcher
                     .MatchStartForward(
                         new CodeMatch(OpCodes.Ldloc_0),
                         new CodeMatch(OpCodes.Call)
                     )
-                    .ThrowIfNotMatch("LocationOfTownsfolkPatches.GetMapCoordinatesForNPCTranspiler: IL code not found")
+                    .ThrowIfNotMatch("LocationOfTownsfolkPatches.GetMapCoordinatesForNPCTranspiler: IL code 1 not found")
                     .Advance(1)
                     .SetOperandAndAdvance(
-                        GetPositionDataInfo
+                        GetPositionDataSafePlayerInfo
+                    )
+                ;
+
+                matcher
+                    .MatchStartForward(
+                        new CodeMatch(OpCodes.Ldloc_2),
+                        new CodeMatch(OpCodes.Call)
+                    )
+                    .ThrowIfNotMatch("LocationOfTownsfolkPatches.GetMapCoordinatesForNPCTranspiler: IL code 2 not found")
+                    .Advance(1)
+                    .SetOperandAndAdvance(
+                        GetPositionDataSafeNPCInfo
                     )
                 ;
 
@@ -48,7 +61,7 @@ namespace WorldAtlas.Compatibility.UIInfoSuite2.Patches
             {
                 CodeMatcher matcher = new(instructions);
 
-                MethodInfo GetPositionDataInfo = AccessTools.Method(typeof(LocationOfTownsfolkPatches), nameof(GetPositionDataSafeNew));
+                MethodInfo GetPositionDataSafePlayerInfo = AccessTools.Method(typeof(LocationOfTownsfolkPatches), nameof(GetPositionDataSafePlayer));
 
                 matcher
                     .MatchStartForward(
@@ -58,7 +71,7 @@ namespace WorldAtlas.Compatibility.UIInfoSuite2.Patches
                     .ThrowIfNotMatch("LocationOfTownsfolkPatches.DrawNPCTranspiler: IL code not found")
                     .Advance(1)
                     .SetOperandAndAdvance(
-                        GetPositionDataInfo
+                        GetPositionDataSafePlayerInfo
                     )
                 ;
 
@@ -71,9 +84,19 @@ namespace WorldAtlas.Compatibility.UIInfoSuite2.Patches
             }
         }
 
-        internal static MapAreaPosition? GetPositionDataSafeNew(GameLocation location, Point _)
+        internal static MapAreaPosition? GetPositionDataSafePlayer(GameLocation location, Point tile)
         {
             return (MapPagePatches.GetPositionData(location, Game1.player.TilePoint)?.Data) ?? WorldMapManager.GetPositionData(Game1.getFarm(), Point.Zero)?.Data;
+        }
+
+        internal static MapAreaPosition? GetPositionDataSafeNPC(GameLocation location, Point tile)
+        {
+            if (ModEntry.GingerIsland.GetPositionData(location, tile) is MapAreaPosition MAP)
+            {
+                return MAP;
+            }
+
+            return (WorldMapManager.GetPositionData(location, tile)?.Data) ?? WorldMapManager.GetPositionData(Game1.getFarm(), Point.Zero)?.Data;
         }
     }
 }

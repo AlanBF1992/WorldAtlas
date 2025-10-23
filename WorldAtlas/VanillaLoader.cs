@@ -72,11 +72,9 @@ namespace WorldAtlas
             // Ginger Island is weird man.
             if (!allRegionsInfo.Select(x => x.DisplayName).Contains("GingerIsland"))
             {
-                MapRegion GingerIsland = WorldMapManager.GetMapRegions().First(x => x.Id == "GingerIsland");
-
                 allRegionsInfo.Insert(1, new RegionInfo(Game1.getLocationFromName("IslandWest"),
-                                                        GingerIsland,
-                                                        GingerIsland.Id));
+                                                        ModEntry.GingerIsland,
+                                                        ModEntry.GingerIsland.Id));
             }
 
             // Get regions id, name and visibility from data.json

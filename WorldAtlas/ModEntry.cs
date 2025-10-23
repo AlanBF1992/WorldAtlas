@@ -2,7 +2,9 @@
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
 using StardewValley.Menus;
+using StardewValley.WorldMaps;
 using WorldAtlas.Compatibility.BetterGameMenu;
+using WorldAtlas.Compatibility.NPCMapLocations;
 using WorldAtlas.Compatibility.UIInfoSuite2;
 
 namespace WorldAtlas
@@ -17,6 +19,8 @@ namespace WorldAtlas
 
         /// <summary>Manifest of the mod.</summary>
         new public static IManifest ModManifest { get; internal set; } = null!;
+
+        public static readonly MapRegion GingerIsland = WorldMapManager.GetMapRegions().First(x => x.Id == "GingerIsland");
 
         public static RegionInfo? SelectedRegionInfo { get; internal set; }
 
@@ -45,6 +49,12 @@ namespace WorldAtlas
             {
                 UIInfoSuite2Loader.Loader(helper, harmony);
                 LogMonitor.Log("UI Info Suite 2 Patches Loaded", LogLevel.Info);
+            }
+
+            if (ModHelper.ModRegistry.IsLoaded("Bouhm.NPCMapLocations"))
+            {
+                NPCMapLocationsLoader.Loader(helper, harmony);
+                LogMonitor.Log("NPC Map Locations Patches Loaded", LogLevel.Info);
             }
         }
 
