@@ -1,4 +1,4 @@
-﻿using HarmonyLib;
+using HarmonyLib;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using StardewModdingAPI;
@@ -130,7 +130,7 @@ namespace WorldAtlas
                         UpdateRegions(regionInfo.Region.Id, regionInfo.DisplayName);
                     },
                     tooltip: () => ModEntry.ModHelper.Translation.Get("gmcm-display-name-tooltip"),
-                    width: 496
+                    width: 500
                 );
 
                 configMenu.AddBoolOption(

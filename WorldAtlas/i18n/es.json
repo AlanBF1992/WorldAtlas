@@ -1,15 +1,15 @@
 {
   "map-tab-main": "Principal",
   "map-tab-extras":  "Otros",
-  "gmcm-basic-config-title": "ConfiguraciÛn B·sica",
-  "gmcm-must-visit-title": "Debe Visitar RegiÛn",
-  "gmcm-must-visit-tooltip": "Debe Visitar la RegiÛn para mostrar el mapa",
-  "gmcm-map-loading-paragraph": "La ConfiguraciÛn del Mapa se mostrar· luego de cargar una partida",
-  "gmcm-map-config-title": "ConfiguraciÛn del Mapa",
+  "gmcm-basic-config-title": "Configuraci√≥n B√°sica",
+  "gmcm-must-visit-title": "Debe Visitar Regi√≥n",
+  "gmcm-must-visit-tooltip": "Debe Visitar la Regi√≥n para mostrar el mapa",
+  "gmcm-map-loading-paragraph": "La Configuraci√≥n del Mapa se mostrar√° luego de cargar una partida",
+  "gmcm-map-config-title": "Configuraci√≥n del Mapa",
   "gmcm-display-name-title": "Nombre mostrado",
   "gmcm-display-name-tooltip": "Nombre mostrado en el mapa",
   "gmcm-is-visible-title": "Es Visible",
   "gmcm-is-visible-tooltip": "Mostrar o ocultar el mapa",
-  "gmcm-page-number-title": "P·gina",
+  "gmcm-page-number-title": "P√°gina",
   "gmcm-page-number-tooltip": "Mostrar en Principal o en Otros"
 }
