@@ -84,7 +84,7 @@ namespace WorldAtlas.Compatibility.UIInfoSuite2.Patches
             }
         }
 
-        internal static MapAreaPosition? GetPositionDataSafePlayer(GameLocation location, Point tile)
+        internal static MapAreaPosition? GetPositionDataSafePlayer(GameLocation location, Point _)
         {
             return (MapPagePatches.GetPositionData(location, Game1.player.TilePoint)?.Data) ?? WorldMapManager.GetPositionData(Game1.getFarm(), Point.Zero)?.Data;
         }

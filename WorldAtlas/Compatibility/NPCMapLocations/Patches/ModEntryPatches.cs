@@ -5,7 +5,6 @@ using StardewValley;
 using StardewValley.WorldMaps;
 using System.Reflection;
 using System.Reflection.Emit;
-using WorldAtlas.Patches;
 
 namespace WorldAtlas.Compatibility.NPCMapLocations.Patches
 {

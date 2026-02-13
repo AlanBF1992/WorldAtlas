@@ -1,4 +1,15 @@
 {
-  "MainPage": "Principal",
-  "ExtrasPage":  "Otros"
+  "map-tab-main": "Principal",
+  "map-tab-extras":  "Otros",
+  "gmcm-basic-config-title": "Configuración Básica",
+  "gmcm-must-visit-title": "Debe Visitar Región",
+  "gmcm-must-visit-tooltip": "Debe Visitar la Región para mostrar el mapa",
+  "gmcm-map-loading-paragraph": "La Configuración del Mapa se mostrará luego de cargar una partida",
+  "gmcm-map-config-title": "Configuración del Mapa",
+  "gmcm-display-name-title": "Nombre mostrado",
+  "gmcm-display-name-tooltip": "Nombre mostrado en el mapa",
+  "gmcm-is-visible-title": "Es Visible",
+  "gmcm-is-visible-tooltip": "Mostrar o ocultar el mapa",
+  "gmcm-page-number-title": "Página",
+  "gmcm-page-number-tooltip": "Mostrar en Principal o en Otros"
 }

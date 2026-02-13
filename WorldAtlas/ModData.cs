@@ -16,11 +16,13 @@ namespace WorldAtlas
         public int PageNum { get; set; } = 0;
     }
 
-    public class RegionInfo(GameLocation location, MapRegion region, string displayName)
+    public class RegionInfo(GameLocation location, MapRegion region, string displayName, bool wasVisited)
     {
         public GameLocation Location { get; set; } = location;
         public MapRegion Region { get; set; } = region;
         public string DisplayName { get; set; } = displayName;
+        public bool wasVisited { get; set; } = wasVisited;
+        public bool isVisible { get; set; } = true;
         public int PageNum { get; set; } = 0;
     }
 }

@@ -110,13 +110,13 @@ namespace WorldAtlas.Patches
             pageNumberComponent.Clear();
 
             pageNumberComponent.Add(
-                new ClickableComponent(new Rectangle(16, 16, 160, 64), ModEntry.ModHelper.Translation.Get("MainPage"))
+                new ClickableComponent(new Rectangle(16, 16, 160, 64), ModEntry.ModHelper.Translation.Get("map-tab-main"))
                 {
                     myID = 0,
                     fullyImmutable = true
                 });
             pageNumberComponent.Add(
-                new ClickableComponent(new Rectangle(160 + 16, 16, 160, 64), ModEntry.ModHelper.Translation.Get("ExtrasPage"))
+                new ClickableComponent(new Rectangle(160 + 16, 16, 160, 64), ModEntry.ModHelper.Translation.Get("map-tab-extras"))
                 {
                     myID = 1,
                     fullyImmutable = true
@@ -127,7 +127,14 @@ namespace WorldAtlas.Patches
         {
             CurrentPageRegionInfo.Clear();
 
-            CurrentPageRegionInfo.AddRange(ModEntry.AllVisibleRegionsInfo.Where(data => data.PageNum == PageNumber));
+            var range = ModEntry.VisibleRegionsInfo.Where(data => data.PageNum == PageNumber);
+
+            if (ModEntry.Config.MustVisitRegion)
+            {
+                range = range.Where(data => data.wasVisited);
+            }
+
+            CurrentPageRegionInfo.AddRange(range);
 
             regionComponents.Clear();
             int totalExtraLines = 0;

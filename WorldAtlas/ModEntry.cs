@@ -22,9 +22,12 @@ namespace WorldAtlas
 
         public static readonly MapRegion GingerIsland = WorldMapManager.GetMapRegions().First(x => x.Id == "GingerIsland");
 
+        public static ModConfig Config { get; internal set; } = null!;
+
         public static RegionInfo? SelectedRegionInfo { get; internal set; }
 
-        public static List<RegionInfo> AllVisibleRegionsInfo { get; internal set; } = null!;
+        public static List<RegionInfo> AvailableRegionsInfo { get; internal set; } = null!;
+        public static List<RegionInfo> VisibleRegionsInfo { get; internal set; } = null!;
 
         public static IBetterGameMenuApi? BetterGameMenuApi { get; internal set; }
 
@@ -33,6 +36,7 @@ namespace WorldAtlas
             LogMonitor = Monitor;
             ModHelper = Helper;
             ModManifest = base.ModManifest;
+            Config = helper.ReadConfig<ModConfig>();
 
             Harmony harmony = new(ModManifest.UniqueID);
 

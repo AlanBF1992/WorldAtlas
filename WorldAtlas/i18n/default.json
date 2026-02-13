@@ -1,4 +1,15 @@
 {
-  "MainPage": "Main",
-  "ExtrasPage":  "Others"
+  "map-tab-main": "Main",
+  "map-tab-extras":  "Others",
+  "gmcm-basic-config-title": "Basic Config",
+  "gmcm-must-visit-title": "Must Visit Region First",
+  "gmcm-must-visit-tooltip": "Must Visit Region to show the map",
+  "gmcm-map-loading-paragraph": "Maps Settings will show after save load",
+  "gmcm-map-config-title": "Maps Config",
+  "gmcm-display-name-title": "Display Name",
+  "gmcm-display-name-tooltip": "Name displayed in the map",
+  "gmcm-is-visible-title": "Is Visible",
+  "gmcm-is-visible-tooltip": "Show or hide the map",
+  "gmcm-page-number-title": "Page",
+  "gmcm-page-number-tooltip": "Show on Main or Others"
 }
