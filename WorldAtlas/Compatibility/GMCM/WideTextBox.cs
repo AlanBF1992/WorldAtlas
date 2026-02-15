@@ -1,11 +1,11 @@
-﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using StardewValley;
 
 namespace WorldAtlas.Compatibility.GMCM
 {
-    internal class WideTextBox(int width, int height) : IKeyboardSubscriber
+    internal class WideTextBox(int width, int height, string text = "") : IKeyboardSubscriber
     {
         private readonly Texture2D textBoxTexture = Game1.content.Load<Texture2D>("LooseSprites\\textBox");
         private readonly SpriteFont font = Game1.smallFont;
@@ -17,7 +17,7 @@ namespace WorldAtlas.Compatibility.GMCM
 
         private bool _selected;
 
-        public virtual string Text { get; set; } = "";
+        public string Text { get; set; } = text;
 
         public bool Selected
         {
@@ -119,12 +119,12 @@ namespace WorldAtlas.Compatibility.GMCM
             b.Draw(textBoxTexture, new Rectangle(X + Width - 16, Y, 16, Height), new Rectangle(textBoxTexture.Bounds.Width - 16, 0, 16, Height), Color.White);
 
             // Recortar si es muy largo
-            string text = Text;
-            Vector2 vector = font.MeasureString(text);
+            string tempText = Text;
+            Vector2 vector = font.MeasureString(tempText);
             while (vector.X > Width)
             {
-                text = text[1..];
-                vector = font.MeasureString(text);
+                tempText = tempText[1..];
+                vector = font.MeasureString(tempText);
             }
 
             // Ni puta idea, revisarlo. Algo hace cada medio segundo
@@ -134,7 +134,7 @@ namespace WorldAtlas.Compatibility.GMCM
                 b.Draw(Game1.staminaRect, new Rectangle(X + 16 + (int)vector.X + 2, Y + 8, 4, 32), Color.Black);
             }
 
-            b.DrawString(font, text, new Vector2(X + 16, Y + 8), Color.Black, 0F, Vector2.Zero, 1f, SpriteEffects.None, 0.99f); //8 -> 12?
+            b.DrawString(font, tempText, new Vector2(X + 16, Y + 8), Color.Black, 0F, Vector2.Zero, 1f, SpriteEffects.None, 0.99f); //8 -> 12?
         }
     }
 }

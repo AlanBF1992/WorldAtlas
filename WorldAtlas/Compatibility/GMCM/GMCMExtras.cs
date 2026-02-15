@@ -1,4 +1,4 @@
-﻿using StardewModdingAPI;
+using StardewModdingAPI;
 
 namespace WorldAtlas.Compatibility.GMCM
 {
@@ -9,7 +9,7 @@ namespace WorldAtlas.Compatibility.GMCM
             var gmcm = ModEntry.ModHelper.ModRegistry.GetApi<IGMCMApi>("spacechase0.GenericModConfigMenu");
             if (gmcm == null) return;
 
-            WideTextBox option = new(width, 48);
+            WideTextBox option = new(width, 48, getValue());
 
             gmcm.AddComplexOption(
                 mod: mod,
