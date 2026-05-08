@@ -38,10 +38,28 @@ namespace WorldAtlas
                 postfix: new HarmonyMethod(typeof(MapPagePatches), nameof(MapPagePatches.ctorPostfix))
             );
 
+            // Acciones al apretar botones
+            harmony.Patch(
+                original: AccessTools.Method(typeof(MapPage), nameof(MapPage.receiveKeyPress)),
+                prefix: new HarmonyMethod(typeof(MapPagePatches), nameof(MapPagePatches.receiveKeyPressPrefix))
+            );
+
             // Acciones al apretar left click
             harmony.Patch(
                 original: AccessTools.Method(typeof(MapPage), nameof(MapPage.receiveLeftClick)),
                 prefix: new HarmonyMethod(typeof(MapPagePatches), nameof(MapPagePatches.receiveLeftClickPrefix))
+            );
+
+            // Acciones al usar gamepad
+            harmony.Patch(
+                original: AccessTools.Method(typeof(IClickableMenu), nameof(IClickableMenu.receiveGamePadButton)),
+                prefix: new HarmonyMethod(typeof(IClickableMenuPatch), nameof(IClickableMenuPatch.receiveGamePadButtonPrefix))
+            );
+
+            // Acciones al usar scroll wheel
+            harmony.Patch(
+                original: AccessTools.Method(typeof(IClickableMenu), nameof(IClickableMenu.receiveScrollWheelAction)),
+                prefix: new HarmonyMethod(typeof(IClickableMenuPatch), nameof(IClickableMenuPatch.receiveScrollWheelActionPrefix))
             );
 
             // Don't draw MiniPortrait if menu is not in that region

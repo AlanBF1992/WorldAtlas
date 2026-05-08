@@ -1,6 +1,7 @@
 ﻿using HarmonyLib;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Input;
 using StardewModdingAPI;
 using StardewValley;
 using StardewValley.Menus;
@@ -189,7 +190,7 @@ namespace WorldAtlas.Patches
                 if (pageNumberComponent[i].containsPoint(x,y))
                 {
                     PageNumber = pageNumberComponent[i].myID;
-                    SelectedComponentId = 0;
+                    SelectedComponentId = 2;
                     createRegionComponents();
                     return false;
                 }
@@ -234,6 +235,44 @@ namespace WorldAtlas.Patches
             }
 
             return true;
+        }
+
+        internal static void receiveKeyPressPrefix(MapPage __instance, Keys key)
+        {
+            switch (key)
+            {
+                case Keys.Left:
+                case Keys.Right:
+                case Keys.Tab:
+                    PageNumber = PageNumber == 0 ? 1 : 0;
+                    SelectedComponentId = 2;
+                    createRegionComponents();
+                    break;
+                case Keys.Up:
+                    if (SelectedComponentId > 2)
+                    {
+                        SelectedComponentId--;
+                    }
+                    else
+                    {
+                        SelectedComponentId = regionComponents.Count + 1;
+                    }
+                    break;
+                case Keys.Down:
+                    if (SelectedComponentId < regionComponents.Count + 1)
+                    {
+                        SelectedComponentId++;
+                    }
+                    else
+                    {
+                        SelectedComponentId = 2;
+                    }
+                    break;
+                default:
+                    return;
+            }
+            ModEntry.SelectedRegionInfo = CurrentPageRegionInfo[SelectedComponentId - 2];
+            ReconstructPage(__instance);
         }
 
         internal static void ReconstructPage(MapPage mapPage)
