@@ -1,4 +1,4 @@
-{
+﻿{
   "map-tab-main": "Main",
   "map-tab-extras":  "Others",
   "gmcm-basic-config-title": "Basic Config",
@@ -11,5 +11,8 @@
   "gmcm-is-visible-title": "Is Visible",
   "gmcm-is-visible-tooltip": "Show or hide the map",
   "gmcm-page-number-title": "Page",
-  "gmcm-page-number-tooltip": "Show on Main or Others"
+  "gmcm-page-number-tooltip": "Show on Main or Others",
+  "gmcm-buttons-placement-config-title": "Buttons Offset",
+  "gmcm-buttons-x-offset-name": "Horizontal Offset",
+  "gmcm-buttons-y-offset-name": "Vertical Offset"
 }

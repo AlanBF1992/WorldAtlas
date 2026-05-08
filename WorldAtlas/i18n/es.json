@@ -1,4 +1,4 @@
-{
+﻿{
   "map-tab-main": "Principal",
   "map-tab-extras":  "Otros",
   "gmcm-basic-config-title": "Configuración Básica",
@@ -11,5 +11,8 @@
   "gmcm-is-visible-title": "Es Visible",
   "gmcm-is-visible-tooltip": "Mostrar o ocultar el mapa",
   "gmcm-page-number-title": "Página",
-  "gmcm-page-number-tooltip": "Mostrar en Principal o en Otros"
+  "gmcm-page-number-tooltip": "Mostrar en Principal o en Otros",
+  "gmcm-buttons-placement-config-title": "Desplazamiento de los botones",
+  "gmcm-buttons-x-offset-name": "Desplazamiento Horizontal",
+  "gmcm-buttons-y-offset-name": "Desplazamiento Vertical"
 }

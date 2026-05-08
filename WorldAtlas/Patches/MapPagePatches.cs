@@ -109,18 +109,24 @@ namespace WorldAtlas.Patches
             // Top buttons
             pageNumberComponent.Clear();
 
-            pageNumberComponent.Add(
-                new ClickableComponent(new Rectangle(16, 16, 160, 64), ModEntry.ModHelper.Translation.Get("map-tab-main"))
+            ClickableComponent mainTab = new(new Rectangle(16, 16, 160, 64), ModEntry.ModHelper.Translation.Get("map-tab-main"))
                 {
                     myID = 0,
                     fullyImmutable = true
-                });
-            pageNumberComponent.Add(
-                new ClickableComponent(new Rectangle(160 + 16, 16, 160, 64), ModEntry.ModHelper.Translation.Get("map-tab-extras"))
+                };
+            ClickableComponent extrasTab = new(new Rectangle(160 + 16, 16, 160, 64), ModEntry.ModHelper.Translation.Get("map-tab-extras"))
                 {
                     myID = 1,
                     fullyImmutable = true
-                });
+                };
+
+            mainTab.bounds.X += ModEntry.Config.xOffset;
+            mainTab.bounds.Y += ModEntry.Config.yOffset;
+            extrasTab.bounds.X += ModEntry.Config.xOffset;
+            extrasTab.bounds.Y += ModEntry.Config.yOffset;
+
+            pageNumberComponent.Add(mainTab);
+            pageNumberComponent.Add(extrasTab);
         }
 
         internal static void createRegionComponents()
@@ -161,6 +167,9 @@ namespace WorldAtlas.Patches
                         upNeighborID = ((i > 0) ? (i + 2 - 1) : (9175502)),
                         fullyImmutable = true
                     };
+
+                c.bounds.X += ModEntry.Config.xOffset;
+                c.bounds.Y += ModEntry.Config.yOffset;
 
                 regionComponents.Add(c);
                 totalExtraLines += internalExtraLines;

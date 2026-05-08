@@ -1,4 +1,4 @@
-using HarmonyLib;
+﻿using HarmonyLib;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using StardewModdingAPI;
@@ -86,6 +86,28 @@ namespace WorldAtlas
                 setValue: (value) => ModEntry.Config.MustVisitRegion = value,
                 name: () => ModEntry.ModHelper.Translation.Get("gmcm-must-visit-title"),
                 tooltip: () => ModEntry.ModHelper.Translation.Get("gmcm-must-visit-tooltip")
+            );
+
+            // Buttons Section
+            configMenu.AddSectionTitle(
+                mod: ModEntry.ModManifest,
+                text: () => ModEntry.ModHelper.Translation.Get("gmcm-buttons-placement-config-title")
+            );
+
+            // xOffset
+            configMenu.AddNumberOption(
+                mod: ModEntry.ModManifest,
+                getValue: () => ModEntry.Config.xOffset,
+                setValue: (value) => ModEntry.Config.xOffset = value,
+                name: () => ModEntry.ModHelper.Translation.Get("gmcm-buttons-x-offset-name")
+            );
+
+            // yOffset
+            configMenu.AddNumberOption(
+                mod: ModEntry.ModManifest,
+                getValue: () => ModEntry.Config.yOffset,
+                setValue: (value) => ModEntry.Config.yOffset = value,
+                name: () => ModEntry.ModHelper.Translation.Get("gmcm-buttons-y-offset-name")
             );
 
             // Paragraph
