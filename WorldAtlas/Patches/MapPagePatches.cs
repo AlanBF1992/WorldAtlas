@@ -175,104 +175,19 @@ namespace WorldAtlas.Patches
                 regionComponents.Add(c);
                 totalExtraLines += internalExtraLines;
 
-                if ((ModEntry.SelectedRegionInfo is null && CurrentPageRegionInfo[i].Region.Id == playerRegionId) || (ModEntry.SelectedRegionInfo?.Region.Id == CurrentPageRegionInfo[i].Region.Id))
+                if ((ModEntry.SelectedRegionInfo is null && CurrentPageRegionInfo[i].Region.Id == playerRegionId)
+                    || (ModEntry.SelectedRegionInfo?.Region.Id == CurrentPageRegionInfo[i].Region.Id))
                 {
                     SelectedComponentId = c.myID;
                     ModEntry.SelectedRegionInfo = CurrentPageRegionInfo[i];
                 }
             }
-        }
 
-        internal static bool receiveLeftClickPrefix(MapPage __instance, int x, int y)
-        {
-            for (int i = 0; i < pageNumberComponent.Count; i++)
+            if (ModEntry.SelectedRegionInfo is null && CurrentPageRegionInfo.Count > 0)
             {
-                if (pageNumberComponent[i].containsPoint(x,y))
-                {
-                    PageNumber = pageNumberComponent[i].myID;
-                    SelectedComponentId = 2;
-                    createRegionComponents();
-                    return false;
-                }
+                SelectedComponentId = 2;
+                ModEntry.SelectedRegionInfo = CurrentPageRegionInfo[0];
             }
-
-            for (int i = 0; i < regionComponents.Count; i++)
-            {
-                if (regionComponents[i].bounds.Contains(x, y))
-                {
-                    SelectedComponentId = regionComponents[i].myID;
-                    ModEntry.SelectedRegionInfo = CurrentPageRegionInfo[i];
-                    ReconstructPage(__instance);
-                    return false;
-                }
-            }
-
-            if(!__instance.points.Values.Any(p => p.containsPoint(x, y)))
-            {
-                PageNumber = 0;
-                SelectedComponentId = 0;
-                ModEntry.SelectedRegionInfo = null;
-
-                createPageButtons();
-                createRegionComponents();
-                ReconstructPage(__instance);
-
-                if (Game1.activeClickableMenu is GameMenu gameMenu)
-                {
-                    gameMenu.changeTab(gameMenu.lastOpenedNonMapTab);
-                    return false;
-                }
-                else if (ModEntry.IsGameMenu(Game1.activeClickableMenu))
-                {
-                    dynamic menu = Game1.activeClickableMenu;
-                    if (!menu.TryChangeTab(menu.LastTab))
-                    {
-                        __instance.exitThisMenu();
-                    }
-
-                    return false;
-                }
-            }
-
-            return true;
-        }
-
-        internal static void receiveKeyPressPrefix(MapPage __instance, Keys key)
-        {
-            switch (key)
-            {
-                case Keys.Left:
-                case Keys.Right:
-                case Keys.Tab:
-                    PageNumber = PageNumber == 0 ? 1 : 0;
-                    SelectedComponentId = 2;
-                    createRegionComponents();
-                    break;
-                case Keys.Up:
-                    if (SelectedComponentId > 2)
-                    {
-                        SelectedComponentId--;
-                    }
-                    else
-                    {
-                        SelectedComponentId = regionComponents.Count + 1;
-                    }
-                    break;
-                case Keys.Down:
-                    if (SelectedComponentId < regionComponents.Count + 1)
-                    {
-                        SelectedComponentId++;
-                    }
-                    else
-                    {
-                        SelectedComponentId = 2;
-                    }
-                    break;
-                default:
-                    return;
-            }
-            ModEntry.SelectedRegionInfo = CurrentPageRegionInfo[SelectedComponentId - 2];
-            ReconstructPage(__instance);
         }
 
         internal static void ReconstructPage(MapPage mapPage)
@@ -332,6 +247,121 @@ namespace WorldAtlas.Patches
                     }
                 }
             }
+        }
+
+
+
+        internal static bool receiveLeftClickPrefix(MapPage __instance, int x, int y)
+        {
+            for (int i = 0; i < pageNumberComponent.Count; i++)
+            {
+                if (pageNumberComponent[i].containsPoint(x, y))
+                {
+                    PageNumber = pageNumberComponent[i].myID;
+                    SelectedComponentId = 2;
+                    createRegionComponents();
+                    return false;
+                }
+            }
+
+            for (int i = 0; i < regionComponents.Count; i++)
+            {
+                if (regionComponents[i].bounds.Contains(x, y))
+                {
+                    SelectedComponentId = regionComponents[i].myID;
+                    ModEntry.SelectedRegionInfo = CurrentPageRegionInfo[i];
+                    ReconstructPage(__instance);
+                    return false;
+                }
+            }
+
+            if (!__instance.points.Values.Any(p => p.containsPoint(x, y)))
+            {
+                PageNumber = 0;
+                SelectedComponentId = 0;
+                ModEntry.SelectedRegionInfo = null;
+
+                createPageButtons();
+                createRegionComponents();
+                ReconstructPage(__instance);
+
+                if (Game1.activeClickableMenu is GameMenu gameMenu)
+                {
+                    gameMenu.changeTab(gameMenu.lastOpenedNonMapTab);
+                    return false;
+                }
+                else if (ModEntry.IsGameMenu(Game1.activeClickableMenu))
+                {
+                    dynamic menu = Game1.activeClickableMenu;
+                    if (!menu.TryChangeTab(menu.LastTab))
+                    {
+                        __instance.exitThisMenu();
+                    }
+
+                    return false;
+                }
+            }
+
+            return true;
+        }
+
+        internal static bool receiveKeyPressPrefix(MapPage __instance, Keys key)
+        {
+            switch (key)
+            {
+                case Keys.Left:
+                case Keys.Right:
+                case Keys.Tab:
+                    ChangePage(__instance);
+                    return false;
+                case Keys.Up:
+                    ChangeRegionUp(__instance);
+                    return false;
+                case Keys.Down:
+                    ChangeRegionDown(__instance);
+                    return false;
+            }
+            return true;
+        }
+
+        internal static void ChangePage(MapPage mapPage)
+        {
+            PageNumber = PageNumber == 0 ? 1 : 0;
+            SelectedComponentId = 2;
+            createRegionComponents();
+            if (regionComponents.Count <= 0) return;
+            ModEntry.SelectedRegionInfo = CurrentPageRegionInfo[SelectedComponentId - 2];
+            ReconstructPage(mapPage);
+        }
+
+        internal static void ChangeRegionUp(MapPage mapPage)
+        {
+            if (regionComponents.Count <= 0) return;
+            if (SelectedComponentId > 2)
+            {
+                SelectedComponentId--;
+            }
+            else
+            {
+                SelectedComponentId = regionComponents.Count + 1;
+            }
+            ModEntry.SelectedRegionInfo = CurrentPageRegionInfo[SelectedComponentId - 2];
+            ReconstructPage(mapPage);
+        }
+
+        internal static void ChangeRegionDown(MapPage mapPage)
+        {
+            if (regionComponents.Count <= 0) return;
+            if (SelectedComponentId < regionComponents.Count + 1)
+            {
+                SelectedComponentId++;
+            }
+            else
+            {
+                SelectedComponentId = 2;
+            }
+            ModEntry.SelectedRegionInfo = CurrentPageRegionInfo[SelectedComponentId - 2];
+            ReconstructPage(mapPage);
         }
     }
 }

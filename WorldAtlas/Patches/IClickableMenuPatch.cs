@@ -12,36 +12,17 @@ namespace WorldAtlas.Patches
             switch (button)
             {
                 case Buttons.Back:
-                    MapPagePatches.PageNumber = MapPagePatches.PageNumber == 0 ? 1 : 0;
-                    MapPagePatches.SelectedComponentId = 2;
-                    MapPagePatches.createRegionComponents();
-                    break;
+                    MapPagePatches.ChangePage(mapPage);
+                    return false;
                 case Buttons.LeftShoulder:
-                    if (MapPagePatches.SelectedComponentId > 2)
-                    {
-                        MapPagePatches.SelectedComponentId--;
-                    }
-                    else
-                    {
-                        MapPagePatches.SelectedComponentId = MapPagePatches.regionComponents.Count + 1;
-                    }
-                    break;
+                    MapPagePatches.ChangeRegionUp(mapPage);
+                    return false;
                 case Buttons.RightShoulder:
-                    if (MapPagePatches.SelectedComponentId < MapPagePatches.regionComponents.Count + 1)
-                    {
-                        MapPagePatches.SelectedComponentId++;
-                    }
-                    else
-                    {
-                        MapPagePatches.SelectedComponentId = 2;
-                    }
-                    break;
+                    MapPagePatches.ChangeRegionDown(mapPage);
+                    return false;
             }
 
-            ModEntry.SelectedRegionInfo = MapPagePatches.CurrentPageRegionInfo[MapPagePatches.SelectedComponentId - 2];
-            MapPagePatches.ReconstructPage(mapPage);
-            return false;
-
+            return true;
         }
 
 
@@ -52,31 +33,15 @@ namespace WorldAtlas.Patches
 
             switch (direction)
             {
-                case < 0:
-                    if (MapPagePatches.SelectedComponentId < MapPagePatches.regionComponents.Count + 1)
-                    {
-                        MapPagePatches.SelectedComponentId++;
-                    }
-                    else
-                    {
-                        MapPagePatches.SelectedComponentId = 2;
-                    }
-                    break;
                 case > 0:
-                    if (MapPagePatches.SelectedComponentId > 2)
-                    {
-                        MapPagePatches.SelectedComponentId--;
-                    }
-                    else
-                    {
-                        MapPagePatches.SelectedComponentId = MapPagePatches.regionComponents.Count + 1;
-                    }
-                    break;
+                    MapPagePatches.ChangeRegionUp(mapPage);
+                    return false;
+                case < 0:
+                    MapPagePatches.ChangeRegionDown(mapPage);
+                    return false;
             }
 
-            ModEntry.SelectedRegionInfo = MapPagePatches.CurrentPageRegionInfo[MapPagePatches.SelectedComponentId - 2];
-            MapPagePatches.ReconstructPage(mapPage);
-            return false;
+            return true;
         }
     }
 }
